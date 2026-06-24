@@ -3,11 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
-import { ChefHat, User, ShieldCheck } from 'lucide-react';
+import { ChefHat, LogOut, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
-  const { role, setRole, isLoading } = useAuth();
+  const { user, role, isLoading, signOut } = useAuth();
   const pathname = usePathname();
 
   if (isLoading) return null;
@@ -45,30 +45,26 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-3 border-l border-border pl-6">
-              <button
-                onClick={() => setRole('student')}
-                className={`p-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium ${
-                  role === 'student'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'hover:bg-muted text-muted-foreground'
-                }`}
-                title="Login as Student"
-              >
-                <User className="h-4 w-4" />
-                <span className="hidden sm:inline">Student</span>
-              </button>
-              <button
-                onClick={() => setRole('admin')}
-                className={`p-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium ${
-                  role === 'admin'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'hover:bg-muted text-muted-foreground'
-                }`}
-                title="Login as Admin"
-              >
-                <ShieldCheck className="h-4 w-4" />
-                <span className="hidden sm:inline">Admin</span>
-              </button>
+              {user ? (
+                <button
+                  onClick={signOut}
+                  className="p-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium hover:bg-red-500/10 text-red-500"
+                  title="Sign Out"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sign Out</span>
+                </button>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="p-2 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:inline">Login</span>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

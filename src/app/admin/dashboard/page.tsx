@@ -5,7 +5,15 @@ import { useAuth } from '@/context/AuthContext';
 import { Users, UtensilsCrossed, TrendingDown, BellRing } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const { role } = useAuth();
+  const { role, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (role !== 'admin') {
     return <div className="text-center mt-20 text-xl font-semibold">Access Denied</div>;

@@ -19,7 +19,7 @@ const meals: Record<MealType, MealStatus> = {
 };
 
 export default function StudentDashboard() {
-  const { role } = useAuth();
+  const { role, isLoading } = useAuth();
   
   // Mock state for poll choices
   const [choices, setChoices] = useState<Record<MealType, boolean | null>>({
@@ -34,6 +34,14 @@ export default function StudentDashboard() {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
     return () => clearInterval(timer);
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (role !== 'student') {
     return <div className="text-center mt-20 text-xl font-semibold">Access Denied</div>;
